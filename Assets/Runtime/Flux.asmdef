@@ -3,6 +3,7 @@
     "rootNamespace": "Flux",
     "references": [
         "GUID:9bc79c24700f893478fc95a5a5e12291",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
         "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
