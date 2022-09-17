@@ -1,5 +1,6 @@
 ﻿using Flux.Input;
 using Flux.Input.StateComponents;
+using Flux.Systems.Avatars;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -10,18 +11,24 @@ namespace Flux.Scopes
     public sealed class FluxLifetimeScope : LifetimeScope
     {
         [SerializeField]
+        private AvatarController _avatarController = null!;
+        
+        [SerializeField]
         private FluxInputController _fluxInputController = null!;
 
         [SerializeField]
         private MouseContainController _mouseContainController = null!;
-        
+
         protected override void Configure(IContainerBuilder builder)
         {
-            // Input registration
+            // Avatar service registration 
+            builder.RegisterInstance(_avatarController);
+            
+            // Input service registration
             builder.RegisterInstance(_fluxInputController.FluxInput);
             builder.RegisterComponent(_mouseContainController);
             
-            // Message Pipe registration
+            // MessagePipe registration
             var msgPipeOptions = builder.RegisterMessagePipe();
             builder.RegisterBuildCallback(container => GlobalMessagePipe.SetProvider(container.AsServiceProvider()));
             RegisterMessageBrokers(builder, msgPipeOptions);
