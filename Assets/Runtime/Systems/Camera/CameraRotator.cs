@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Flux.Systems.Camera
 {
-    public class CameraRotator : MonoBehaviour
+    public sealed class CameraRotator : MonoBehaviour
     {
         [Inject]
         private FluxInput _fluxInput = null!;
