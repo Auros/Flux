@@ -625,6 +625,7 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 1539542841}
   - {fileID: 411280645}
+  - {fileID: 1996305652}
   _avatarController: {fileID: 1996305654}
   _fluxInputController: {fileID: 1123167041}
   _mouseContainController: {fileID: 1846872963}
@@ -1637,3 +1638,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c45c85aed344d7f954ef30174254cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _loadTimeout: 10

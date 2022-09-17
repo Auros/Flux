@@ -1,5 +1,6 @@
 ﻿using Flux.Input;
 using Flux.Input.StateComponents;
+using Flux.Models.Avatars.Events;
 using Flux.Systems.Avatars;
 using MessagePipe;
 using UnityEngine;
@@ -37,10 +38,9 @@ namespace Flux.Scopes
         private static void RegisterMessageBrokers(IContainerBuilder builder, MessagePipeOptions options)
         {
             void WithType<T>() => builder.RegisterMessageBroker<T>(options);
-            void WithKeyedType<TKey, TValue>() => builder.RegisterMessageBroker<TKey, TValue>(options);
-            
-            WithType<int>();
-            WithKeyedType<string, int>();
+            // void WithKeyedType<TKey, TValue>() => builder.RegisterMessageBroker<TKey, TValue>(options);
+
+            WithType<AvatarLoadingFinishedContext>();
         }
     }
 }
