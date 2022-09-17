@@ -11,10 +11,16 @@ namespace Flux.Systems.Camera
         private FluxInput _fluxInput = null!;
 
         [SerializeField]
+        private Transform? _calculationContainer;
+        
+        [SerializeField]
         private CameraTarget _target = null!;
 
-        private GameObject? _targetCalculatorParent;
-        private GameObject? _targetCalculatorChild;
+        [SerializeField]
+        private float _speed = 1f;
+
+        private Transform? _targetCalculatorParent;
+        private Transform? _targetCalculatorChild;
 
         private GameObject? _newCompute;
         
@@ -30,7 +36,10 @@ namespace Flux.Systems.Camera
             if (delta == default)
                 return;
 
-            delta *= Time.deltaTime;
+            // Multiply by deltaTime to make frame independent, then set the speed of movement;
+            delta *= Time.deltaTime * _speed;
+            
+            // Invert the delta to move the camera the opposite way of the user dragging.
             delta *= -1f;
 
             var basePosition = transform.position;
@@ -41,12 +50,15 @@ namespace Flux.Systems.Camera
             var radius = Vector3.Distance(basePosition, targetPosition);
 
             if (_targetCalculatorParent == null)
-                _targetCalculatorParent = new GameObject("Target Calculator (Parent)");
+            {
+                _targetCalculatorParent = new GameObject("Target Calculator (Parent)").transform;
+                _targetCalculatorParent.SetParent(_calculationContainer);
+            }
 
             if (_targetCalculatorChild == null)
             {
-                _targetCalculatorChild = new GameObject("Target Calculator (Child)");
-                _targetCalculatorChild.transform.SetParent(_targetCalculatorParent.transform);
+                _targetCalculatorChild = new GameObject("Target Calculator (Child)").transform;
+                _targetCalculatorChild.SetParent(_targetCalculatorParent.transform);
             }
 
             if (_newCompute == null)
@@ -56,27 +68,31 @@ namespace Flux.Systems.Camera
             _targetCalculatorParent.transform.LookAt(targetPosition);
             _targetCalculatorChild.transform.localPosition = delta;
 
-            var unProjectedPosition = _targetCalculatorChild.transform.position;
+            var unProjectedPosition = _targetCalculatorChild.position;
 
-            var tcpt = _targetCalculatorParent.transform;
-            tcpt.transform.position = targetPosition;
-            tcpt.transform.LookAt(unProjectedPosition);
-            var computedCameraPosition = tcpt.position + tcpt.forward * radius;
+            _targetCalculatorParent.position = targetPosition;
+            _targetCalculatorParent.LookAt(unProjectedPosition);
+            var computedCameraPosition = _targetCalculatorParent.position + _targetCalculatorParent.forward * radius;
             
             transform.position = computedCameraPosition;
             transform.LookAt(_target.transform);
 
+            // Get the current screen position
             var screenWidth = Screen.width;
             var screenHeight = Screen.height;
             
+            // Get the current mouse position
             var mousePos = Mouse.current.position;
             var mouseX = mousePos.x.ReadValue();
             var mouseY = mousePos.y.ReadValue();
+            
+            // If the mouse exits the X bounds of the screen, teleport it to the other side.
             if (mouseX > screenWidth)
                 Mouse.current.WarpCursorPosition(new Vector2(0, mouseY));
             else if (mouseX < 0)
                 Mouse.current.WarpCursorPosition(new Vector2(screenWidth, mouseY));
             
+            // If the mouse exits the Y bounds of the screen, teleport it to the other side.
             if (mouseY > screenHeight)
                 Mouse.current.WarpCursorPosition(new Vector2(mouseX, 0));
             else if (mouseY < 0)
