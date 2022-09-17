@@ -29,7 +29,11 @@ MonoBehaviour:
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
+    - com.cysharp.unitask
     - com.openupm
+    - com.vrmc.gltf
+    - com.vrmc.univrm
+    - com.vrmc.vrmshaders
     - jp.hadashikick.vcontainer
     - nl.elraccoone.tweens
     m_IsDefault: 0

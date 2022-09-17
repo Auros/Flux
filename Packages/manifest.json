@@ -42,14 +42,20 @@
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0",
     "jp.hadashikick.vcontainer": "1.11.1",
-    "nl.elraccoone.tweens": "2.1.0"
+    "nl.elraccoone.tweens": "2.1.0",
+    "com.vrmc.univrm": "0.103.2",
+    "com.cysharp.unitask": "2.3.1"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
+        "com.cysharp.unitask",
         "com.openupm",
+        "com.vrmc.gltf",
+        "com.vrmc.univrm",
+        "com.vrmc.vrmshaders",
         "jp.hadashikick.vcontainer",
         "nl.elraccoone.tweens"
       ]
