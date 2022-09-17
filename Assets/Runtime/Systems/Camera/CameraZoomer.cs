@@ -44,6 +44,7 @@ namespace Flux.Systems.Camera
             
             // Set the new position to ourself (camera, presumably)
             transform.position = newPosition;
+            
         }
     }
 }

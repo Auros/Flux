@@ -45,7 +45,16 @@ namespace Flux.Input
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Rotation"",
+                    ""type"": ""Value"",
+                    ""id"": ""d422a738-ec3c-4fea-ad0d-cab7b05b7140"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -63,11 +72,22 @@ namespace Flux.Input
                 {
                     ""name"": """",
                     ""id"": ""c654cea5-7ca4-43fc-8e95-f81d87365fab"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
                     ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba40718c-b75f-40c4-a155-491b1804292e"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -97,6 +117,7 @@ namespace Flux.Input
             m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
             m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
             m_Camera_Rotate = m_Camera.FindAction("Rotate", throwIfNotFound: true);
+            m_Camera_Rotation = m_Camera.FindAction("Rotation", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -158,12 +179,14 @@ namespace Flux.Input
         private ICameraActions m_CameraActionsCallbackInterface;
         private readonly InputAction m_Camera_Zoom;
         private readonly InputAction m_Camera_Rotate;
+        private readonly InputAction m_Camera_Rotation;
         public struct CameraActions
         {
             private @FluxInput m_Wrapper;
             public CameraActions(@FluxInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Zoom => m_Wrapper.m_Camera_Zoom;
             public InputAction @Rotate => m_Wrapper.m_Camera_Rotate;
+            public InputAction @Rotation => m_Wrapper.m_Camera_Rotation;
             public InputActionMap Get() { return m_Wrapper.m_Camera; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -179,6 +202,9 @@ namespace Flux.Input
                     @Rotate.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotate;
                     @Rotate.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotate;
                     @Rotate.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotate;
+                    @Rotation.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotation;
+                    @Rotation.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotation;
+                    @Rotation.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnRotation;
                 }
                 m_Wrapper.m_CameraActionsCallbackInterface = instance;
                 if (instance != null)
@@ -189,6 +215,9 @@ namespace Flux.Input
                     @Rotate.started += instance.OnRotate;
                     @Rotate.performed += instance.OnRotate;
                     @Rotate.canceled += instance.OnRotate;
+                    @Rotation.started += instance.OnRotation;
+                    @Rotation.performed += instance.OnRotation;
+                    @Rotation.canceled += instance.OnRotation;
                 }
             }
         }
@@ -206,6 +235,7 @@ namespace Flux.Input
         {
             void OnZoom(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
+            void OnRotation(InputAction.CallbackContext context);
         }
     }
 }
