@@ -1,0 +1,4 @@
+Sourced from https://github.com/luluco250/unity-ui-blur
+(MIT)
+
+Works wonderfully <3
