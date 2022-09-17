@@ -1,4 +1,5 @@
 ﻿using Flux.Input;
+using Flux.Input.StateComponents;
 using UnityEngine;
 using VContainer;
 
@@ -8,6 +9,9 @@ namespace Flux.Systems.Camera
     {
         [Inject]
         private readonly FluxInput _fluxInput = null!;
+        
+        [Inject]
+        private MouseContainController _mouseContainController = null!;
         
         [SerializeField]
         private float _speed = 1f;
@@ -40,6 +44,9 @@ namespace Flux.Systems.Camera
             
             // Move the camera
             transform.Translate(_cameraTransform.TransformDirection(new Vector3(delta.x, delta.y, 0f)));
+            
+            // Lock the mouse within the bounds of the screen.
+            _mouseContainController.LockThisFrame();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Flux.Input;
+using Flux.Input.StateComponents;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using VContainer;
 
 namespace Flux.Systems.Camera
@@ -9,6 +9,9 @@ namespace Flux.Systems.Camera
     {
         [Inject]
         private FluxInput _fluxInput = null!;
+
+        [Inject]
+        private MouseContainController _mouseContainController = null!;
 
         [SerializeField]
         private Transform? _calculationContainer;
@@ -76,26 +79,8 @@ namespace Flux.Systems.Camera
             transform.position = computedCameraPosition;
             transform.LookAt(_target.transform);
 
-            // Get the current screen position
-            var screenWidth = Screen.width;
-            var screenHeight = Screen.height;
-            
-            // Get the current mouse position
-            var mousePos = Mouse.current.position;
-            var mouseX = mousePos.x.ReadValue();
-            var mouseY = mousePos.y.ReadValue();
-            
-            // If the mouse exits the X bounds of the screen, teleport it to the other side.
-            if (mouseX > screenWidth)
-                Mouse.current.WarpCursorPosition(new Vector2(0, mouseY));
-            else if (mouseX < 0)
-                Mouse.current.WarpCursorPosition(new Vector2(screenWidth, mouseY));
-            
-            // If the mouse exits the Y bounds of the screen, teleport it to the other side.
-            if (mouseY > screenHeight)
-                Mouse.current.WarpCursorPosition(new Vector2(mouseX, 0));
-            else if (mouseY < 0)
-                Mouse.current.WarpCursorPosition(new Vector2(mouseX, screenHeight));
+            // Lock the mouse within the bounds of the screen.
+            _mouseContainController.LockThisFrame();
         }
     }
 }
