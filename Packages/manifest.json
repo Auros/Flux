@@ -41,7 +41,8 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0",
-    "jp.hadashikick.vcontainer": "1.11.1"
+    "jp.hadashikick.vcontainer": "1.11.1",
+    "nl.elraccoone.tweens": "2.1.0"
   },
   "scopedRegistries": [
     {
@@ -49,7 +50,8 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.openupm",
-        "jp.hadashikick.vcontainer"
+        "jp.hadashikick.vcontainer",
+        "nl.elraccoone.tweens"
       ]
     }
   ]
