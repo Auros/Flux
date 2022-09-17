@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotate",
+                    "name": "Move",
                     "type": "Button",
                     "id": "cf3a2990-0fd7-491d-958d-725e4850a4ef",
                     "expectedControlType": "Button",
@@ -24,10 +24,19 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotation",
+                    "name": "Movement",
                     "type": "Value",
                     "id": "d422a738-ec3c-4fea-ad0d-cab7b05b7140",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Shift",
+                    "type": "Button",
+                    "id": "d2d6002e-1e86-4ff1-93be-dcc5a92a93a0",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -52,7 +61,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Desktop",
-                    "action": "Rotate",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -63,7 +72,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rotation",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "18d936db-f287-4b6a-81b3-79ee51e85eee",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Shift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

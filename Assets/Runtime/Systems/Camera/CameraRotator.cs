@@ -21,18 +21,20 @@ namespace Flux.Systems.Camera
 
         private Transform? _targetCalculatorParent;
         private Transform? _targetCalculatorChild;
-
-        private GameObject? _newCompute;
         
         private void Update()
         {
             // If the user isn't holding down the rotation trigger,
             // don't do anything.
-            if (!Mathf.Approximately(_fluxInput.Camera.Rotate.ReadValue<float>(), 1f))
+            if (!Mathf.Approximately(_fluxInput.Camera.Move.ReadValue<float>(), 1f))
+                return;
+
+            // If we are using the shift key, disable the rotator.
+            if (Mathf.Approximately(_fluxInput.Camera.Shift.ReadValue<float>(), 1f))
                 return;
             
             // If the rotation delta hasn't changed, we don't need to move the camera.
-            var delta = _fluxInput.Camera.Rotation.ReadValue<Vector2>();
+            var delta = _fluxInput.Camera.Movement.ReadValue<Vector2>();
             if (delta == default)
                 return;
 
@@ -60,9 +62,6 @@ namespace Flux.Systems.Camera
                 _targetCalculatorChild = new GameObject("Target Calculator (Child)").transform;
                 _targetCalculatorChild.SetParent(_targetCalculatorParent.transform);
             }
-
-            if (_newCompute == null)
-                _newCompute = new GameObject("Computed Camera Position");
 
             _targetCalculatorParent.transform.position = basePosition;
             _targetCalculatorParent.transform.LookAt(targetPosition);
