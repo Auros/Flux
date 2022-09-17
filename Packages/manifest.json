@@ -44,13 +44,17 @@
     "jp.hadashikick.vcontainer": "1.11.1",
     "nl.elraccoone.tweens": "2.1.0",
     "com.vrmc.univrm": "0.103.2",
-    "com.cysharp.unitask": "2.3.1"
+    "com.cysharp.unitask": "2.3.1",
+    "com.cysharp.messagepipe.vcontainer": "1.7.4",
+    "com.cysharp.messagepipe": "1.7.4"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
+        "com.cysharp.messagepipe",
+        "com.cysharp.messagepipe.vcontainer",
         "com.cysharp.unitask",
         "com.openupm",
         "com.vrmc.gltf",
