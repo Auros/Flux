@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Runtime.UI.Animated
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class TweenableCanvasGroup : MonoBehaviour
+    public sealed class TweenableCanvasGroup : MonoBehaviour
     {
         [SerializeField, Range(0, 1)]
         private float _inactive;
