@@ -51,6 +51,7 @@ namespace Flux.Scopes
 
         private static void RegisterViewModels(IContainerBuilder builder)
         {
+            builder.RegisterEntryPoint<LoadViewModel>().AsSelf();
             builder.RegisterEntryPoint<LoadingViewModel>().AsSelf();
             builder.RegisterEntryPoint<MenuPanelsViewModel>().AsSelf();
             builder.RegisterEntryPoint<ActiveModelViewModel>().AsSelf();
