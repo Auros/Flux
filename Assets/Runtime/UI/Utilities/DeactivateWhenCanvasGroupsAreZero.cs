@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Flux.UI
+namespace Flux.UI.Utilities
 {
     public class DeactivateWhenCanvasGroupsAreZero : MonoBehaviour
     {

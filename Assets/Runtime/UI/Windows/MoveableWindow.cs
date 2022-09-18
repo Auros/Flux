@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace Flux.UI.Runtime.UI.Windows
+namespace Flux.UI.Windows
 {
     public class MoveableWindow : MonoBehaviour, IDragHandler
     {

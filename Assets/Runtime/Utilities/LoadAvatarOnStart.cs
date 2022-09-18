@@ -2,7 +2,7 @@
 using UnityEngine;
 using VContainer;
 
-namespace Flux.Runtime.Utilities
+namespace Flux.Utilities
 {
     public sealed class LoadAvatarOnStart : MonoBehaviour
     {
