@@ -28,9 +28,12 @@ namespace Flux.Systems.Camera
         private void Update()
         {
             // If the user isn't holding down the rotation trigger,
-            // don't do anything.
+            // make sure that we're looking at our rotation target
             if (!Mathf.Approximately(_fluxInput.Camera.Move.ReadValue<float>(), 1f))
+            {
+                transform.LookAt(_target.transform);
                 return;
+            }
 
             // If we are using the shift key, disable the rotator.
             if (Mathf.Approximately(_fluxInput.Camera.Shift.ReadValue<float>(), 1f))
