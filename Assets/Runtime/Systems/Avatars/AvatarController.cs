@@ -16,13 +16,13 @@ namespace Flux.Systems.Avatars
     public sealed class AvatarController : MonoBehaviour
     {
         [Inject]
-        private readonly IPublisher<AvatarLoadingFailedContext> _avatarLoadingFailedContextPublisher = null!;
+        private readonly IPublisher<AvatarLoadingFailedContext> _loadingFailedPublisher = null!;
 
         [Inject]
-        private readonly IPublisher<AvatarLoadingStartedContext> _avatarLoadingStartedContextPublisher = null!;
+        private readonly IPublisher<AvatarLoadingStartedContext> _loadingStartedPublisher = null!;
         
         [Inject]
-        private readonly IPublisher<AvatarLoadingFinishedContext> _avatarLoadingFinishedContextPublisher = null!;
+        private readonly IPublisher<AvatarLoadingFinishedContext> _loadingFinishedPublisher = null!;
 
         [SerializeField, Min(0.01f)]
         private float _loadTimeout = 10f;
@@ -66,7 +66,7 @@ namespace Flux.Systems.Avatars
             try
             {
                 // Send the "started loading" event
-                _avatarLoadingStartedContextPublisher.Publish(new AvatarLoadingStartedContext(path));
+                _loadingStartedPublisher.Publish(new AvatarLoadingStartedContext(path));
                 
                 // Create the stopwatch
                 var sw = Stopwatch.StartNew();
@@ -87,7 +87,7 @@ namespace Flux.Systems.Avatars
                 sw.Stop();
                 
                 var ctx = new AvatarLoadingFinishedContext(path, sw.Elapsed.TotalSeconds, Avatar);
-                _avatarLoadingFinishedContextPublisher.Publish(ctx);
+                _loadingFinishedPublisher.Publish(ctx);
             }
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace Flux.Systems.Avatars
                     OperationCanceledException => AvatarLoadingFailedContext.ReasonType.Canceled,
                     _ => AvatarLoadingFailedContext.ReasonType.Other
                 };
-                _avatarLoadingFailedContextPublisher.Publish(new AvatarLoadingFailedContext(path, reasonType, e.GetType().FullName));
+                _loadingFailedPublisher.Publish(new AvatarLoadingFailedContext(path, reasonType, e.GetType().FullName));
             }
             finally
             {
