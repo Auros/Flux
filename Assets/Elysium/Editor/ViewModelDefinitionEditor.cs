@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace Elysium.Editor
 {
@@ -10,6 +11,9 @@ namespace Elysium.Editor
             var definition = (target as ViewModelDefinition)!;
             
             var unityObjectViewModel = EditorGUILayout.ObjectField("View Model", definition.ViewModelObject, typeof(UnityEngine.Object), true);
+            if (definition.ViewModel is not null && definition.ViewModel is not Object)
+                return;
+            
             definition.ViewModel = unityObjectViewModel;
         }
     }
