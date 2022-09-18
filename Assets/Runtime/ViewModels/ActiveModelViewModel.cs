@@ -136,7 +136,7 @@ namespace Flux.ViewModels
 
         private void AvatarCleared(AvatarClearedContext ctx)
         {
-            
+            _ = true;
         }
     }
 }
