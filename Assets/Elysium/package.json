@@ -1,0 +1,10 @@
+{
+    "name": "dev.auros.elysium",
+    "displayName": "Elysium",
+    "version": "0.0.1",
+    "unity": "2021.3",
+    "description": "MVVM Framework for Unity",
+    "keywords": ["MVVM", "UI", "UI Framework"],
+    "license": "MIT",
+    "licensesUrl": "https://github.com/Auros/Elysium/blob/main/LICENSE"
+}

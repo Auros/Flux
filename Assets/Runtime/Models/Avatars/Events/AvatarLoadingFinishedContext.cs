@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using UniGLTF;
 
 namespace Flux.Models.Avatars.Events
 {
+    [PublicAPI]
     public class AvatarLoadingFinishedContext
     {
         /// <summary>

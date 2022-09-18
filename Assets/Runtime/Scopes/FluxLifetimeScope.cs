@@ -2,6 +2,7 @@
 using Flux.Input.StateComponents;
 using Flux.Models.Avatars.Events;
 using Flux.Systems.Avatars;
+using Flux.ViewModels;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -33,6 +34,8 @@ namespace Flux.Scopes
             var msgPipeOptions = builder.RegisterMessagePipe();
             builder.RegisterBuildCallback(container => GlobalMessagePipe.SetProvider(container.AsServiceProvider()));
             RegisterMessageBrokers(builder, msgPipeOptions);
+            
+            RegisterViewModels(builder);
         }
 
         private static void RegisterMessageBrokers(IContainerBuilder builder, MessagePipeOptions options)
@@ -40,7 +43,14 @@ namespace Flux.Scopes
             void WithType<T>() => builder.RegisterMessageBroker<T>(options);
             // void WithKeyedType<TKey, TValue>() => builder.RegisterMessageBroker<TKey, TValue>(options);
 
+            WithType<AvatarLoadingFailedContext>();
+            WithType<AvatarLoadingStartedContext>();
             WithType<AvatarLoadingFinishedContext>();
+        }
+
+        private static void RegisterViewModels(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<LoadingViewModel>().AsSelf();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Flux.Models.Avatars.Events;
 using MessagePipe;
@@ -15,6 +16,12 @@ namespace Flux.Systems.Avatars
     public sealed class AvatarController : MonoBehaviour
     {
         [Inject]
+        private readonly IPublisher<AvatarLoadingFailedContext> _avatarLoadingFailedContextPublisher = null!;
+
+        [Inject]
+        private readonly IPublisher<AvatarLoadingStartedContext> _avatarLoadingStartedContextPublisher = null!;
+        
+        [Inject]
         private readonly IPublisher<AvatarLoadingFinishedContext> _avatarLoadingFinishedContextPublisher = null!;
 
         [SerializeField, Min(0.01f)]
@@ -28,28 +35,39 @@ namespace Flux.Systems.Avatars
         /// </summary>
         public RuntimeGltfInstance? Avatar { get; private set; }
 
+        public bool IsLoading => _cancelLoadToken is not null && !_cancelLoadToken.IsCancellationRequested;
+
         /// <summary>
         /// Starts loading for an avatar at a path.
         /// </summary>
         /// <param name="path">The path to load the avatar VRM data from.</param>
         public void Load(string path)
         {
+            UniTask.Void(() => LoadAsync(path));
+        }
+
+        private async UniTaskVoid LoadAsync(string path)
+        {
+            // Switch to main thread so unity objects can be properly created and events can be dispatched on
+            // the main thread
+            await UniTask.SwitchToMainThread();
+            
             // Cancel anything that may be loading at the moment.
             Clear();
             Cancel();
             
             // Create the awaiter if it doesn't exist
-            _awaiter ??= new RuntimeOnlyAwaitCaller();
+            _awaiter = new RuntimeOnlyAwaitCaller();
             
             // Build the avatar load task and run it.
             var loadTask = VrmUtility.LoadAsync(path, _awaiter).AsUniTask();
-            UniTask.RunOnThreadPool(() => LoadAsync(path, loadTask));
-        }
-
-        private async UniTaskVoid LoadAsync(string path, UniTask<RuntimeGltfInstance> loadTask)
-        {
+            
+            
             try
             {
+                // Send the "started loading" event
+                _avatarLoadingStartedContextPublisher.Publish(new AvatarLoadingStartedContext(path));
+                
                 // Create the stopwatch
                 var sw = Stopwatch.StartNew();
                 
@@ -61,7 +79,7 @@ namespace Flux.Systems.Avatars
 
                 // We run on the thread pool again to easily pass in our cancellation token.
                 Avatar = await UniTask.RunOnThreadPool(() => loadTask, cancellationToken: cts.Token);
-
+                
                 // Make the avatar visible.
                 Avatar.ShowMeshes();
 
@@ -73,12 +91,19 @@ namespace Flux.Systems.Avatars
             }
             catch (Exception e)
             {
-                print(e);
+                var reasonType = e switch
+                {
+                    TaskCanceledException => AvatarLoadingFailedContext.ReasonType.TimedOut,
+                    OperationCanceledException => AvatarLoadingFailedContext.ReasonType.Canceled,
+                    _ => AvatarLoadingFailedContext.ReasonType.Other
+                };
+                _avatarLoadingFailedContextPublisher.Publish(new AvatarLoadingFailedContext(path, reasonType, e.GetType().FullName));
             }
             finally
             {
-                // Remove the handle from this token
+                // Remove the handle of the token and awaiter
                 _cancelLoadToken = null;
+                _awaiter = null;
             }
         }
         
