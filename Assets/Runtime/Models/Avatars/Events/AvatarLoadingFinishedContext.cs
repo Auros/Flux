@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using UniGLTF;
+using VRM;
 
 namespace Flux.Models.Avatars.Events
 {
@@ -17,14 +18,21 @@ namespace Flux.Models.Avatars.Events
         public double LoadTime { get; }
         
         /// <summary>
+        /// The loaded avatar's metadata
+        /// </summary>
+        public VRMMetaObject Metadata { get; }
+        
+        /// <summary>
         /// The loaded avatar.
         /// </summary>
         public RuntimeGltfInstance Avatar { get; }
+        
 
-        public AvatarLoadingFinishedContext(string source, double loadTime, RuntimeGltfInstance avatar)
+        public AvatarLoadingFinishedContext(string source, double loadTime, VRMMetaObject metadata, RuntimeGltfInstance avatar)
         {
             Source = source;
             LoadTime = loadTime;
+            Metadata = metadata;
             Avatar = avatar;
         }
     }

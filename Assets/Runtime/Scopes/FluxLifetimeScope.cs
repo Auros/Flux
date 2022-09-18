@@ -43,6 +43,7 @@ namespace Flux.Scopes
             void WithType<T>() => builder.RegisterMessageBroker<T>(options);
             // void WithKeyedType<TKey, TValue>() => builder.RegisterMessageBroker<TKey, TValue>(options);
 
+            WithType<AvatarClearedContext>();
             WithType<AvatarLoadingFailedContext>();
             WithType<AvatarLoadingStartedContext>();
             WithType<AvatarLoadingFinishedContext>();
@@ -52,6 +53,7 @@ namespace Flux.Scopes
         {
             builder.RegisterEntryPoint<LoadingViewModel>().AsSelf();
             builder.RegisterEntryPoint<MenuPanelsViewModel>().AsSelf();
+            builder.RegisterEntryPoint<ActiveModelViewModel>().AsSelf();
         }
     }
 }

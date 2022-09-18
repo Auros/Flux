@@ -29,9 +29,9 @@ namespace Flux.ViewModels
         [Notify]
         private string _mainText = "Loading";
 
-        private Color _neutral = Color.white;
-        private Color _success = new(0.54f, 1f, 0.54f);
-        private Color _failed = new(1f, 0.7f, 0.7f);
+        private readonly Color _neutral = Color.white;
+        private readonly Color _success = new(0.54f, 1f, 0.54f);
+        private readonly Color _failed = new(1f, 0.7f, 0.7f);
         
         private IDisposable? _disposer;
         private readonly ISubscriber<AvatarLoadingFailedContext> _avatarFailed;

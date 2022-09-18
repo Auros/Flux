@@ -16,6 +16,9 @@ namespace Flux.Systems.Avatars
     public sealed class AvatarController : MonoBehaviour
     {
         [Inject]
+        private readonly IPublisher<AvatarClearedContext> _avatarClearedPublisher = null!;
+        
+        [Inject]
         private readonly IPublisher<AvatarLoadingFailedContext> _loadingFailedPublisher = null!;
 
         [Inject]
@@ -29,9 +32,14 @@ namespace Flux.Systems.Avatars
         
         private RuntimeOnlyAwaitCaller? _awaiter;
         private CancellationTokenSource? _cancelLoadToken;
+        
+        /// <summary>
+        /// The active avatar's metadata
+        /// </summary>
+        public VRMMetaObject? Metadata { get; private set; }
 
         /// <summary>
-        /// The avatar 
+        /// The active avatar.
         /// </summary>
         public RuntimeGltfInstance? Avatar { get; private set; }
 
@@ -58,9 +66,11 @@ namespace Flux.Systems.Avatars
             
             // Create the awaiter if it doesn't exist
             _awaiter = new RuntimeOnlyAwaitCaller();
+
+            VRMMetaObject? localMeta = null;
             
             // Build the avatar load task and run it.
-            var loadTask = VrmUtility.LoadAsync(path, _awaiter).AsUniTask();
+            var loadTask = VrmUtility.LoadAsync(path, _awaiter, metaCallback: meta => localMeta = meta).AsUniTask();
             
             try
             {
@@ -84,8 +94,13 @@ namespace Flux.Systems.Avatars
 
                 // Finish timing the avatar loading sequence.
                 sw.Stop();
+
+                Metadata = localMeta;
                 
-                var ctx = new AvatarLoadingFinishedContext(path, sw.Elapsed.TotalSeconds, Avatar);
+                // Clamp the thumbnail texture! Why isn't this done by default : (
+                Metadata!.Thumbnail.wrapMode = TextureWrapMode.Clamp;
+                
+                var ctx = new AvatarLoadingFinishedContext(path, sw.Elapsed.TotalSeconds, Metadata!, Avatar);
                 _loadingFinishedPublisher.Publish(ctx);
             }
             catch (Exception e)
@@ -126,6 +141,10 @@ namespace Flux.Systems.Avatars
             // Calling dispose is a shortcut for destroying the avatar : D
             Avatar.Dispose();
             Avatar = null;
+
+            Metadata = null;
+            
+            _avatarClearedPublisher.Publish(new AvatarClearedContext());
         }
     }
 }
