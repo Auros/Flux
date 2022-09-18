@@ -19,8 +19,20 @@ namespace Runtime.UI.Animated
         [SerializeField]
         private EaseType _easeType = EaseType.CubicOut;
 
-        [field: SerializeField]
-        public bool Activated { get; set; }
+        [SerializeField]
+        private bool _activated;
+
+        public bool Activated
+        {
+            get => _activated;
+            set
+            {
+                _activated = value;
+                
+                if (!isActiveAndEnabled && _activated)
+                    _canvasGroup.alpha = 0.01f;
+            }
+        }
 
         private bool _valueLastFrame;
         private Tween<float>? _activeTween;

@@ -1,7 +1,7 @@
 using Elysium;
 using UnityEngine;
 
-namespace Flux
+namespace Flux.ViewModels.Assigners
 {
     [RequireComponent(typeof(ViewModelDefinition))]
     public abstract class ViewModelAssigner : MonoBehaviour

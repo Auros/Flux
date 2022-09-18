@@ -62,7 +62,6 @@ namespace Flux.Systems.Avatars
             // Build the avatar load task and run it.
             var loadTask = VrmUtility.LoadAsync(path, _awaiter).AsUniTask();
             
-            
             try
             {
                 // Send the "started loading" event

@@ -1,7 +1,7 @@
 using Elysium.Components;
 using UnityEngine;
 
-namespace Flux.UI
+namespace Flux.UI.Bindings
 {
     [RequireComponent(typeof(CanvasGroup))]
     public sealed class CanvasRaycasterBinding : ComponentPropertyBinding

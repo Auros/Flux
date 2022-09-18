@@ -2,12 +2,12 @@ using Elysium.Components;
 using Runtime.UI.Animated;
 using UnityEngine;
 
-namespace Flux.UI
+namespace Flux.UI.Bindings
 {
     [RequireComponent(typeof(TweenableCanvasGroup))]
-    public sealed class TweenableCanvasGroupBinding : ComponentPropertyBinding
+    public class TweenableCanvasGroupBinding : ComponentPropertyBinding
     {
-        private TweenableCanvasGroup _tweenableCanvasGroup = null!;
+        protected TweenableCanvasGroup _tweenableCanvasGroup = null!;
 
         protected override void Start()
         {

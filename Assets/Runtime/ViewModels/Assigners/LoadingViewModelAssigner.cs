@@ -2,7 +2,7 @@ using VContainer;
 
 namespace Flux.ViewModels.Assigners
 {
-    public class LoadingViewModelAssigner : ViewModelAssigner
+    public sealed class LoadingViewModelAssigner : ViewModelAssigner
     {
         [Inject]
         private readonly LoadingViewModel _loadingViewModel = null!;
