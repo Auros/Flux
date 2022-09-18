@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Flux.UI.Utilities
 {
-    public class DeactivateWhenCanvasGroupsAreZero : MonoBehaviour
+    public sealed class DeactivateWhenCanvasGroupsAreZero : MonoBehaviour
     {
         [SerializeField]
         private CanvasGroup[] _canvasGroups = Array.Empty<CanvasGroup>();

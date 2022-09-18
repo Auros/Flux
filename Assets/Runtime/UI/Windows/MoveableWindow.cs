@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Flux.UI.Windows
 {
-    public class MoveableWindow : MonoBehaviour, IDragHandler
+    public sealed class MoveableWindow : MonoBehaviour, IDragHandler
     {
         private Canvas? _canvas;
 
