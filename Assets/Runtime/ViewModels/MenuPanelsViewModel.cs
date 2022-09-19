@@ -45,6 +45,7 @@ namespace Flux.ViewModels
         
         public void Dispose() => _disposable?.Dispose();
         
+        // Dismiss the model panel if it's active when the current avatar is cleared.
         private void AvatarCleared(AvatarClearedContext ctx)
         {
             if (ActivePanel is not Panel.Model)
