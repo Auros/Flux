@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Flux.UI
+namespace Flux.UI.Utilities
 {
     [RequireComponent(typeof(Button))]
     public class OpenURLButton : MonoBehaviour
