@@ -29,15 +29,18 @@ namespace Flux.ViewModels
         public MenuPanelsViewModel(ISubscriber<AvatarClearedContext> avatarCleared, AvatarController avatarController)
         {
             _avatarCleared = avatarCleared;
-            
-            CloseAllPanelsCommand = new RelayCommand(() => ActivePanel = Panel.None, null);
-            OpenLoadPanelCommand = new RelayCommand(() => ActivePanel = Panel.Load, null);
-            OpenInfoPanelCommand = new RelayCommand(() => ActivePanel = Panel.Info, null);
-            OpenModelPanelCommand = new RelayCommand(() => ActivePanel = Panel.Model, () => avatarController.Avatar);
-            OpenOptionsPanelCommand = new RelayCommand(() => ActivePanel = Panel.Options, null);
-            OpenQuitPanelCommand = new RelayCommand(() => ActivePanel = Panel.Quit, null);
+
+            CloseAllPanelsCommand = CreateTransitionCommand(Panel.None);
+            OpenLoadPanelCommand = CreateTransitionCommand(Panel.Load);
+            OpenInfoPanelCommand = CreateTransitionCommand(Panel.Info);
+            OpenModelPanelCommand = CreateTransitionCommand(Panel.Model, () => avatarController.Avatar);
+            OpenOptionsPanelCommand = CreateTransitionCommand(Panel.Options);
+            OpenQuitPanelCommand = CreateTransitionCommand(Panel.Quit);
         }
-        
+
+        private ICommand CreateTransitionCommand(Panel panel, Func<bool>? canExecute = null)
+            => new RelayCommand(() => ActivePanel = ActivePanel == panel ? Panel.None : panel, canExecute);
+
         public void Start() => _disposable = _avatarCleared.Subscribe(AvatarCleared);
         
         public void Dispose() => _disposable?.Dispose();
