@@ -5818,6 +5818,7 @@ GameObject:
   - component: {fileID: 1028334318}
   - component: {fileID: 1028334317}
   - component: {fileID: 1028334320}
+  - component: {fileID: 1028334321}
   m_Layer: 0
   m_Name: VRM File Input
   m_TagString: Untagged
@@ -5995,6 +5996,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: VrmFilePath
+--- !u!114 &1028334321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028334315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394acebe45ac80c4e9a9805b62beb9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: LoadCommand
 --- !u!1 &1038972632
 GameObject:
   m_ObjectHideFlags: 0
@@ -7050,9 +7064,9 @@ MonoBehaviour:
   m_fontSize: 40
   m_fontSizeBase: 40
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 40
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
