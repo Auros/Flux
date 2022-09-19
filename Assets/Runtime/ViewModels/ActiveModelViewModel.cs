@@ -102,27 +102,29 @@ namespace Flux.ViewModels
             string MakeInfoTemplate(string? value, string propertyName = "unknown")
                 => $"{propertyName} - <color=#cfcfcf>{(string.IsNullOrWhiteSpace(value) ? "Not Provided" : value)}</color>";
 
-            ModelName = ctx.Metadata.Title;
-            Thumbnail = ctx.Metadata.Thumbnail;
-
             var avatar = ctx.Avatar;
+            var metadata = ctx.Metadata;
+            
+            ModelName = metadata.Title;
+            Thumbnail = metadata.Thumbnail;
+
             Triangles = MakeInfoTemplate(avatar.Meshes.Sum(m => m.triangles.Length).ToString(), nameof(Triangles));
             Materials = MakeInfoTemplate(avatar.Materials.Count.ToString(), nameof(Materials));
             SkinnedMeshes = MakeInfoTemplate(avatar.SkinnedMeshRenderers.Count.ToString(), "Skinned Meshes");
             Animations = MakeInfoTemplate(avatar.AnimationClips.Count.ToString(), nameof(Animations));
             Blendshapes = MakeInfoTemplate(avatar.Meshes.Sum(m => m.blendShapeCount).ToString(), nameof(Blendshapes));
 
-            Author = MakeInfoTemplate(ctx.Metadata.Author, nameof(Author));
-            Version = MakeInfoTemplate(ctx.Metadata.Version, nameof(Version));
-            Reference = MakeInfoTemplate(ctx.Metadata.Reference, nameof(Reference));
-            ContactInformation = MakeInfoTemplate(ctx.Metadata.ContactInformation, "Contact Information");
+            Author = MakeInfoTemplate(metadata.Author, nameof(Author));
+            Version = MakeInfoTemplate(metadata.Version, nameof(Version));
+            Reference = MakeInfoTemplate(metadata.Reference, nameof(Reference));
+            ContactInformation = MakeInfoTemplate(metadata.ContactInformation, "Contact Information");
 
-            var allowedUserInfo = ctx.Metadata.AllowedUser switch
+            var allowedUserInfo = metadata.AllowedUser switch
             {
                 VRM.AllowedUser.Everyone => (_positive, nameof(VRM.AllowedUser.Everyone)),
                 VRM.AllowedUser.ExplicitlyLicensedPerson => (_neutral, "Explicitly Licensed To Person"),
                 VRM.AllowedUser.OnlyAuthor => (_negative, "Only Author"),
-                _ => (_unknown, ctx.Metadata.AllowedUser.ToString())
+                _ => (_unknown, metadata.AllowedUser.ToString())
             };
 
             (string, string) GetImprovedUsageInfo(UssageLicense license) => license switch
@@ -132,9 +134,9 @@ namespace Flux.ViewModels
                 _ => (_unknown, license.ToString())
             };
 
-            var violenceInfo = GetImprovedUsageInfo(ctx.Metadata.ViolentUssage);
-            var sexualInfo = GetImprovedUsageInfo(ctx.Metadata.SexualUssage);
-            var commercialInfo = GetImprovedUsageInfo(ctx.Metadata.CommercialUssage);
+            var violenceInfo = GetImprovedUsageInfo(metadata.ViolentUssage);
+            var sexualInfo = GetImprovedUsageInfo(metadata.SexualUssage);
+            var commercialInfo = GetImprovedUsageInfo(metadata.CommercialUssage);
             
             AllowedUser = $"Allowed To Use - <color={allowedUserInfo.Item1}>{allowedUserInfo.Item2}</color>";
             Violence =
@@ -144,17 +146,17 @@ namespace Flux.ViewModels
             Commercial =
                 $"Commercial Usage - <color={commercialInfo.Item1}>{commercialInfo.Item2}";
             
-            OpenAdditionalPermissionInfo = string.IsNullOrWhiteSpace(ctx.Metadata.OtherPermissionUrl) ? null : new RelayCommand(
-                () => Application.OpenURL(ctx.Metadata.OtherPermissionUrl), 
-                () => !string.IsNullOrWhiteSpace(ctx.Metadata.OtherPermissionUrl));
+            OpenAdditionalPermissionInfo = string.IsNullOrWhiteSpace(metadata.OtherPermissionUrl) ? null : new RelayCommand(
+                () => Application.OpenURL(metadata.OtherPermissionUrl), 
+                () => !string.IsNullOrWhiteSpace(metadata.OtherPermissionUrl));
 
-            OpenAdditionalLicenseInfo = ctx.Metadata.LicenseType is not LicenseType.Other ? null : new RelayCommand(
-                () => Application.OpenURL(ctx.Metadata.OtherLicenseUrl), 
-                () => ctx.Metadata.LicenseType is LicenseType.Other && !string.IsNullOrWhiteSpace(ctx.Metadata.OtherLicenseUrl));
+            OpenAdditionalLicenseInfo = metadata.LicenseType is not LicenseType.Other ? null : new RelayCommand(
+                () => Application.OpenURL(metadata.OtherLicenseUrl), 
+                () => metadata.LicenseType is LicenseType.Other && !string.IsNullOrWhiteSpace(metadata.OtherLicenseUrl));
             
             HasAdditionalInfo = OpenAdditionalPermissionInfo is not null || OpenAdditionalLicenseInfo is not null;
 
-            License = $"License - <color={_neutral}>{ctx.Metadata.LicenseType.ToString().Replace("_", " ")}</color>";
+            License = $"License - <color={_neutral}>{metadata.LicenseType.ToString().Replace("_", " ")}</color>";
         }
 
         private void AvatarCleared(AvatarClearedContext ctx)
