@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using Elysium;
 using Flux.Models.Avatars.Events;
@@ -18,6 +19,21 @@ namespace Flux.ViewModels
         [Notify]
         private Texture2D? _thumbnail;
 
+        [Notify]
+        private string _triangles = string.Empty;
+
+        [Notify]
+        private string _materials = string.Empty;
+
+        [Notify]
+        private string _skinnedMeshes = string.Empty;
+
+        [Notify]
+        private string _animations = string.Empty;
+
+        [Notify]
+        private string _blendshapes = string.Empty;
+        
         [Notify]
         private string _author = string.Empty;
 
@@ -88,6 +104,13 @@ namespace Flux.ViewModels
 
             ModelName = ctx.Metadata.Title;
             Thumbnail = ctx.Metadata.Thumbnail;
+
+            var avatar = ctx.Avatar;
+            Triangles = MakeInfoTemplate(avatar.Meshes.Sum(m => m.triangles.Length).ToString(), nameof(Triangles));
+            Materials = MakeInfoTemplate(avatar.Materials.Count.ToString(), nameof(Materials));
+            SkinnedMeshes = MakeInfoTemplate(avatar.SkinnedMeshRenderers.Count.ToString(), "Skinned Meshes");
+            Animations = MakeInfoTemplate(avatar.AnimationClips.Count.ToString(), nameof(Animations));
+            Blendshapes = MakeInfoTemplate(avatar.Meshes.Sum(m => m.blendShapeCount).ToString(), nameof(Blendshapes));
 
             Author = MakeInfoTemplate(ctx.Metadata.Author, nameof(Author));
             Version = MakeInfoTemplate(ctx.Metadata.Version, nameof(Version));
